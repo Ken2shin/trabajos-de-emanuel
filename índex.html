@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda Deportiva Eleven Gear</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --azul-barcelona: #004d98;
+      --granate-barcelona: #a50044;
+      --fondo: rgba(255, 255, 255, 0.8);
+      --sombra: rgba(0, 0, 0, 0.2);
+      --color-texto: #f0f0f0; /* Color de texto claro */
+      --color-texto-seccion: #333333; /* Color de texto para secciones */
+    }
+
+    body {
+      background: url('fondo.jpeg') center/cover no-repeat;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    #particles-js {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      color: var(--color-texto);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      z-index: 1000;
+      padding: 10px 0;
+      animation: fadeInDown 8s;
+    }
+
+    nav {
+      background: rgba(0, 0, 0, 0.6);
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      animation: fadeInUp 8s;
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      padding: 10px 0;
+      list-style: none;
+    }
+
+    nav ul li {
+      margin: 0 15px;
+ }
+
+    nav ul li a {
+      color: #f0f0f0; /* Color de texto claro para mejor legibilidad */
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    nav ul li a:hover {
+      color: var(--granate-barcelona); /* Color al pasar el cursor */
+    }
+
+    .content {
+      padding-top: 120px; /* Espacio para header y nav */
+    }
+
+    .grid-productos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      justify-content: center;
+      padding: 0 20px;
+    }
+
+    .producto {
+      background: var(--fondo);
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px var(--sombra);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s;
+      height: 290px;
+    }
+
+    .producto img {
+      border-radius: 4px;
+      object-fit: contain;
+      width: 100%;
+      height: 80px;
+    }
+
+    .producto h3 {
+      margin-top: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      color: var(--azul-barcelona);
+    }
+
+    .producto p {
+      font-size: 1rem;
+      color: var(--color-texto-seccion); /* Cambiado a color más oscuro para mejor legibilidad */
+      font-weight: bold;
+    }
+
+    .producto button {
+      margin-top: 12px;
+      padding: 6px 10px;
+      background: var(--azul-barcelona);
+      color: var(--color-texto);
+      border: none;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      box-shadow: 0 4px 6px var(--sombra);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .producto button:hover {
+      background: var(--granate-barcelona);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px var(--sombra);
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.8);
+      color: var(--color-texto);
+      text-align: center;
+      padding: 10px 0;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+
+    /* Estilos para el modal */
+    .modal {
+      display: none; /* Oculto por defecto */
+      position: fixed; /* Fijo en la pantalla */
+      z-index: 1002; /* Asegúrate de que esté por encima de otros elementos */
+      left: 0;
+      top: 0;
+      width: 100%; /* Ancho completo */
+      height: 100%; /* Alto completo */
+      background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+      justify-content: center; /* Centrar horizontalmente */
+      align-items: center; /* Centrar verticalmente */
+    }
+
+    .modal-content {
+      background-color: white; /* Fondo blanco para el contenido */
+      padding: 20px; /* Espaciado interno */
+      border-radius: 10px; /* Bordes redondeados */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+    }
+
+    /* Estilos para el chat en vivo */
+    .chat-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      display: none; /* Oculto por defecto */
+      flex-direction: column;
+      z-index: 1001;
+    }
+
+    .chat-header {
+      background: var(--azul-barcelona);
+      color: white;
+      padding: 10px;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-header h3 {
+      margin: 0;
+      font-size: 1rem;
+ }
+
+    .close-chat {
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .chat-messages {
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 10px;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .chat-input button {
+      margin-left: 5px;
+      padding: 5px 10px;
+      background: var(--azul-barcelona);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .chat-input button:hover {
+      background: var(--granate-barcelona);
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <header class="animate__animated animate__fadeInDown">
+    <h1 class="text-3xl font-bold uppercase">Tienda Deportiva - ELEVEN GEAR</h1>
+    <input id="searchInput" class="mt-2 p-3 w-3/4 max-w-lg rounded text-gray-700" type="text" placeholder="Buscar productos..." oninput="filtrarProductos()">
+    <button onclick="toggleMenuFunciones()">Funciones</button>
+    <div class="menu-funciones" id="menuFunciones">
+      <h3>Funciones de la Página</h3>
+      <ul>
+        <li><a href="#ropa">Ver Ropa</a></li>
+        <li><a href="#accesorios">Ver Accesorios</a></li>
+        <li><a href="#promociones">Ver Promociones</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <nav class="animate__animated animate__fadeInUp">
+    <ul class="flex justify-center space-x-6 uppercase text-white">
+      <li><a href="#ropa">Ropa</a></li>
+      <li><a href="#accesorios">Accesorios</a></li>
+      <li><a href="#promociones">Promociones</a></li>
+    </ul>
+  </nav>
+
+  <div class="content">
+    <section id="ropa" class="container mx-auto py-10">
+      <h2 class="text-2xl font-bold text-center mb-6 text-[var(--azul-barcelona)]">Ropa Deportiva</h2>
+      <div class="grid-productos animate__animated animate__fadeIn">
+        <div class="producto">
+          <img src="images/ropa1.jpeg" alt="Camiseta Oficial">
+          <h3>Camiseta Oficial</h3>
+          <p>$79.99</p>
+          <label for="size1">Tamaño:</label>
+          <select id="size1">
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <label for="quantity1">Cantidad:</label>
+          <input type="number" id="quantity1" min="1" value="1" style="width: 50px;">
+          <button onclick="abrirModal('Camiseta Oficial', 79.99)">Detalles</button>
+          <button onclick="finalizarCompra('Camiseta Oficial', 79.99)">Comprar</button>
+        </div>
+        <div class="producto">
+          <img src="images/ropa2.jpeg" alt="Camiseta Alternativa">
+          <h3>Camiseta Alternativa</h3>
+          <p>$69.99</p>
+          <label for="size2">Tamaño:</label>
+          <select id="size2">
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+          <label for="quantity2">Cantidad:</label>
+          <input type="number" id="quantity2" min="1" value="1" style="width: 50px;">
+          <button onclick="abrirModal('Camiseta Alternativa', 69.99)">Detalles</button>
+          <button onclick="finalizarCompra('Camiseta Alternativa', 69.99)">Comprar</button>
+ </div>
+      </div>
+    </section>
+
+    <section id="accesorios" class="container mx-auto py-10">
+      <h2 class="text-2xl font-bold text-center mb-6 text-[var(--azul-barcelona)]">Accesorios Deportivos</h2>
+      <div class="grid-productos animate__animated animate__fadeIn">
+        <div class="producto producto-accesorio">
+          <img class="animate__animated animate__rotateIn" src="images/accesorio1.jpg" alt="Gorra Deportiva">
+          <h3>Gorra Deportiva</h3>
+          <p>$29.99</p>
+          <label for="size3">Tamaño:</label>
+          <select id="size3">
+            <option value="Talla Única">Talla Única</option>
+          </select>
+          <label for="quantity3">Cantidad:</label>
+          <input type="number" id="quantity3" min="1" value="1" style="width: 50px;">
+          <button onclick="abrirModal('Gorra Deportiva', 29.99)">Detalles</button>
+          <button onclick="finalizarCompra('Gorra Deportiva', 29.99)">Comprar</button>
+        </div>
+        <div class="producto producto-accesorio">
+          <img class="animate__animated animate__rotateIn" src="images/accesorio2.jpg" alt="Mochila Deportiva">
+          <h3>Mochila Deportiva</h3>
+          <p>$49.99</p>
+          <label for="size4">Tamaño:</label>
+          <select id="size4">
+            <option value="Talla Única">Talla Única</option>
+          </select>
+          <label for="quantity4">Cantidad:</label>
+          <input type="number" id="quantity4" min="1" value="1" style="width: 50px;">
+          <button onclick="abrirModal('Mochila Deportiva', 49.99)">Detalles</button>
+          <button onclick="finalizarCompra('Mochila Deportiva', 49.99)">Comprar</button>
+        </div>
+        <div class="producto producto-accesorio">
+          <img class="animate__animated animate__rotateIn" src="images/accesorio3.jpg" alt="Botella de Agua">
+          <h3>Botella de Agua</h3>
+          <p>$19.99</p>
+          <label for="size5">Tamaño:</label>
+          <select id="size5">
+            <option value="Talla Única">Talla Única</option>
+          </select>
+          <label for="quantity5">Cantidad:</label>
+          <input type="number" id="quantity5" min="1" value="1" style="width: 50px;">
+          <button onclick="abrirModal('Botella de Agua', 19.99)">Detalles</button>
+          <button onclick="finalizarCompra('Botella de Agua', 19.99)">Comprar</button>
+        </div>
+        <div class="producto producto-accesorio">
+          <img class="animate__animated animate__rotateIn" src="images/accesorio4.jpg" alt="Muñequera Deportiva">
+          <h3>Muñequera Deportiva</h3>
+          <p>$15.99</p>
+          <label for="size6">Tamaño:</label>
+          <select id="size6">
+            <option value="Talla Única">Talla Única</option>
+          </select>
+          <label for="quantity6">Cantidad:</label>
+          <input type="number" id="quantity6" min="1" value="1" style="width: 50px;">
+          <button onclick="abrirModal('Muñequera Deportiva', 15.99)">Detalles</button>
+          <button onclick="finalizarCompra('Muñequera Deportiva', 15.99)">Comprar</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="promociones" class="container mx-auto py-5 max-w-3xl animate__animated animate__fadeIn">
+      <h2 class="text-xl font-bold text-center mb-5 text-[var(--azul-barcelona)]">Promociones Especiales</h2>
+      <div class="flex justify-between mb-6">
+        <div class="w-1/2 p-4 bg-white shadow-md text-center rounded-md">
+          <h3 class="font-bold text-lg">20% de Descuento</h3>
+ <p class="text-gray-500">En toda la tienda por compras superiores a $100</p>
+        </div>
+        <div class="w-1/2 p-4 bg-white shadow-md text-center rounded-md">
+          <h3 class="font-bold text-lg">2x1 en Camisetas</h3>
+          <p class="text-gray-500">Compra 2 camisetas y paga solo 1</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="cerrarModal()">&times;</span>
+      <h3 id="modal-title"></h3>
+      <p id="modal-price"></p>
+      <p id="modal-size"></p>
+      <p id="modal-quantity"></p>
+      <button onclick="cerrarModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <div class="modal" id="purchase-modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="cerrarModalCompra()">&times;</span>
+      <h3>Confirmación de Compra</h3>
+      <p id="confirm-title"></p>
+      <p id="confirm-price"></p>
+      <p id="confirm-size"></p>
+      <p id="confirm-quantity"></p>
+      <button onclick="confirmarCompra()">Confirmar Compra</button>
+      <button onclick="cerrarModalCompra()">Cerrar</button>
+    </div>
+  </div>
+
+  <div id="mensaje-confirmacion"></div>
+
+  <footer>
+    <p>&copy; 2024 Tienda Deportiva Eleven Gear. Todos los derechos reservados.</p>
+  </footer>
+
+  <div class="chat-container" id="chatContainer">
+    <div class="chat-header">
+      <h3>Chat en Vivo</h3>
+      <span class="close-chat" onclick="toggleChat()">×</span>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <p>¡Hola! ¿En qué puedo ayudarte?</p>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Escribe tu mensaje...">
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    particlesJS('particles-js', {
+      particles: {
+        number: {
+          value: 50
+        },
+        color: {
+          value: '#ffffff'
+        },
+        shape: {
+          type: 'circle'
+        },
+        opacity: {
+          value: 0.5
+        },
+        size: {
+          value: 3
+        }
+      }
+    });
+
+    function abrirModal(nombre, precio) {
+      const size = document.getElementById('size1').value || document.getElementById('size2').value || document.getElementById('size3').value || document.getElementById('size4').value || document.getElementById('size5').value || document.getElementById('size6').value;
+      const quantity = document.getElementById('quantity1').value || document.getElementById('quantity2').value || document.getElementById('quantity3').value || document.getElementById('quantity4').value || document.getElementById('quantity5').value || document.getElementById('quantity6').value;
+      document.getElementById('modal-title').innerText = nombre;
+      document.getElementById('modal-price').innerText = '$' + precio;
+      document.getElementById('modal-size').innerText = 'Tamaño: ' + size;
+      document.getElementById('modal-quantity').innerText = 'Cantidad: ' + quantity;
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    function finalizarCompra(nombre, precio) {
+      const size = document.getElementById('size1').value || document.getElementById('size2').value || document.getElementById('size3').value || document.getElementById('size4').value || document.getElementById('size5').value || document.getElementById('size6').value;
+      const quantity = document.getElementById('quantity1').value || document.getElementById('quantity2').value || document.getElementById('quantity3').value || document.getElementById('quantity4').value || document 
+      .getElementById('quantity5').value || document.getElementById('quantity6').value;
+      document.getElementById('confirm-title').innerText = nombre;
+      document.getElementById('confirm-price').innerText = '$' + precio;
+      document.getElementById('confirm-size').innerText = 'Tamaño: ' + size;
+      document.getElementById('confirm-quantity').innerText = 'Cantidad: ' + quantity;
+      document.getElementById('purchase-modal').style.display = 'flex';
+    }
+
+    function cerrarModalCompra() {
+      document.getElementById('purchase-modal').style.display = 'none';
+    }
+
+    function confirmarCompra() {
+      document.getElementById('mensaje-confirmacion').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('mensaje-confirmacion').style.display = 'none';
+      }, 3000); // Ocultar el mensaje después de 3 segundos
+      cerrarModalCompra();
+    }
+
+    function toggleMenuFunciones() {
+      const menu = document.getElementById('menuFunciones');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function filtrarProductos() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const productos = document.querySelectorAll('.producto');
+      productos.forEach(producto => {
+        const title = producto.querySelector('h3').innerText.toLowerCase();
+        producto.style.display = title.includes(input) ? 'flex' : 'none';
+      });
+    }
+
+    // Funciones para el chat en vivo
+    function toggleChat() {
+      const chatContainer = document.getElementById('chatContainer');
+      chatContainer.style.display = chatContainer.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (message) {
+        const chatMessages = document.getElementById('chatMessages');
+        const newMessage = document.createElement('p');
+        newMessage.textContent = message;
+        chatMessages.appendChild(newMessage);
+        input.value = ''; // Limpiar el campo de entrada
+        chatMessages.scrollTop = chatMessages.scrollHeight; // Desplazar hacia abajo
+      }
+    }
+
+    // Iniciar animación de giro al cargar la página
+    window.onload = function() {
+      const accesorios = document.querySelectorAll('.producto-accesorio img');
+      accesorios.forEach(img => {
+        img.classList.add('animate__animated', 'animate__rotateIn');
+      });
+    }
+  </script>
+</body>
+</html>
